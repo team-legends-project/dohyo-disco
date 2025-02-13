@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Mario64";
+  src: url("/assets/Mario64.ttf") format("truetype");
+}
+body {
+  font-family: "Arial", sans-serif !important;
+}

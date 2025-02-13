@@ -1,0 +1,11 @@
+{
+  "cellSize": 64,
+  "front_taunt_start": 39,
+  "front_taunt_end": 45,
+  "right_walk_start": 117,
+  "right_walk_end": 126,
+  "front_idle_start": 364,
+  "front_idle_end": 365,
+  "left_walk_start": 143,
+  "left_walk_end": 152
+}
