@@ -2,6 +2,7 @@ import Phaser from "phaser";
 
 import Preloader from "./Preloader";
 import welcome from "./Welcome";
+import ChooseCharacter from "./ChooseCharacter";
 
 const config = {
   type: Phaser.AUTO,
@@ -14,7 +15,7 @@ const config = {
       gravity: { y: 200 },
     },
   },
-  scene: [Preloader, welcome],
+  scene: [Preloader, welcome, ChooseCharacter],
 };
 
 export default new Phaser.Game(config);

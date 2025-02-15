@@ -7,7 +7,8 @@ export default class Welcome extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("openingImage", "/textures/openingImage.jpg");
+    this.load.image("openingImage", "/textures/backgrounds/openingImage.jpg");
+    this.load.image("buttonNormal", "/textures/buttons/startBtn.png");
   }
 
   create() {
@@ -62,6 +63,25 @@ export default class Welcome extends Phaser.Scene {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: "right front taunt",
+      frames: this.anims.generateFrameNumbers("playerOne", {
+        start: 27,
+        end: 33,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "left front taunt",
+      frames: this.anims.generateFrameNumbers("playerTwo", {
+        start: 27,
+        end: 33,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    });
+
     this.leftAnimatedCharacter = this.add.sprite(-50, 400, "playerTwo");
     this.rightAnimatedCharacter = this.add.sprite(800, 400, "playerOne");
     this.leftAnimatedCharacter.setScale(2);
@@ -84,6 +104,8 @@ export default class Welcome extends Phaser.Scene {
       },
       onComplete: () => {
         this.leftAnimatedCharacter.play("left idle");
+        this.leftCharacterStopped = true;
+        this.checkBothStopped();
       },
     });
     this.tweens.add({
@@ -100,7 +122,31 @@ export default class Welcome extends Phaser.Scene {
       },
       onComplete: () => {
         this.rightAnimatedCharacter.play("right idle");
+        this.rightCharacterStopped = true;
+        this.checkBothStopped();
       },
+    });
+  }
+  checkBothStopped() {
+    if (this.leftCharacterStopped && this.rightCharacterStopped) {
+      this.showStartButton();
+    }
+  }
+  showStartButton() {
+    const button = this.add
+      .image(420, 550, "buttonNormal")
+      .setInteractive()
+      .setOrigin(0.5)
+      .setScale(0.75);
+
+    button.on("pointerdown", () => {
+      this.leftAnimatedCharacter.play("left front taunt");
+      this.rightAnimatedCharacter.play("right front taunt");
+    });
+    button.on("pointerup", () => {
+      this.time.delayedCall(1500, () => {
+        this.scene.start("Choose Character");
+      });
     });
   }
 }
