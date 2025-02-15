@@ -8,7 +8,9 @@ export default class Welcome extends Phaser.Scene {
 
   preload() {
     this.load.image("openingImage", "/textures/backgrounds/openingImage.jpg");
-    this.load.image("buttonNormal", "/textures/buttons/startBtn.png");
+
+    this.load.image("onePlayerSelect", "/textures/buttons/1player.png");
+    this.load.image("twoPlayerSelect", "/textures/buttons/2player.png");
   }
 
   create() {
@@ -31,8 +33,8 @@ export default class Welcome extends Phaser.Scene {
     this.rightAnimatedCharacter.setScale(2);
 
     // opening animations
-    this.rightAnimatedCharacter.play("playerOne:right_walk_in");
-    this.leftAnimatedCharacter.play("playerTwo:left_walk_in");
+    this.rightAnimatedCharacter.play("playerOne:right_walk_in_slow");
+    this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow");
 
     this.tweens.add({
       targets: this.leftAnimatedCharacter,
@@ -42,9 +44,9 @@ export default class Welcome extends Phaser.Scene {
       onUpdate: () => {
         if (
           this.leftAnimatedCharacter.anims.currentAnim.key !==
-          "playerTwo:left_walk_in"
+          "playerTwo:left_walk_in_slow"
         ) {
-          this.leftAnimatedCharacter.play("playerTwo:left_walk_in", true);
+          this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow", true);
         }
       },
       onComplete: () => {
@@ -61,9 +63,12 @@ export default class Welcome extends Phaser.Scene {
       onUpdate: () => {
         if (
           this.rightAnimatedCharacter.anims.currentAnim.key !==
-          "playerOne:right_walk_in"
+          "playerOne:right_walk_in_slow"
         ) {
-          this.rightAnimatedCharacter.play("playerOne:right_walk_in", true);
+          this.rightAnimatedCharacter.play(
+            "playerOne:right_walk_in_slow",
+            true
+          );
         }
       },
       onComplete: () => {
@@ -79,19 +84,27 @@ export default class Welcome extends Phaser.Scene {
     }
   }
   showStartButton() {
-    const button = this.add
-      .image(420, 550, "buttonNormal")
+    const singlePlayer = this.add
+      .image(225, 550, "onePlayerSelect")
       .setInteractive()
-      .setOrigin(0.5)
+      .setScale(0.75);
+    const twoPlayer = this.add
+      .image(650, 550, "twoPlayerSelect")
+      .setInteractive()
       .setScale(0.75);
 
-    button.on("pointerdown", () => {
+    singlePlayer.on("pointerup", () => {
       this.leftAnimatedCharacter.play("playerTwo:front_taunt");
       this.rightAnimatedCharacter.play("playerOne:front_taunt");
-    });
-    button.on("pointerup", () => {
       this.time.delayedCall(1500, () => {
-        this.scene.start("stage one");
+        this.scene.start("Choose Character", { players: 1 });
+      });
+    });
+    twoPlayer.on("pointerup", () => {
+      this.leftAnimatedCharacter.play("playerTwo:front_taunt");
+      this.rightAnimatedCharacter.play("playerOne:front_taunt");
+      this.time.delayedCall(1500, () => {
+        this.scene.start("Choose Character", { players: 2 });
       });
     });
   }
