@@ -47,8 +47,6 @@ export default class ChooseCharacter extends Phaser.Scene {
       });
     }
 
-    // get player inputs from registry
-
     // titles
     this.add.text(220, 100, "Choose your fighter", {
       fontSize: 45,

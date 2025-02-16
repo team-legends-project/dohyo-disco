@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import "../../styles/styles.css";
 
 export default class Welcome extends Phaser.Scene {
   constructor() {
@@ -8,7 +7,6 @@ export default class Welcome extends Phaser.Scene {
 
   preload() {
     this.load.image("openingImage", "/textures/backgrounds/openingImage.jpg");
-
     this.load.image("onePlayerSelect", "/textures/buttons/1player.png");
     this.load.image("twoPlayerSelect", "/textures/buttons/2player.png");
   }

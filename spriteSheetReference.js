@@ -12,4 +12,14 @@ for (let i = 0; i < ROWS; i++) {
   frameNums.push(temp);
 }
 
-console.log(frameNums);
+const buttonFrames = [];
+let cellNumber = 0;
+for (let i = 0; i < 24; i++) {
+  const temp = [];
+  for (let j = 0; j < 33; j++) {
+    temp.push(cellNumber);
+    cellNumber++;
+  }
+  buttonFrames.push(temp);
+}
+console.log(buttonFrames);
