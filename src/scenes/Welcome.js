@@ -1,14 +1,14 @@
 import Phaser from "phaser";
-import "../../styles/styles.css";
 
 export default class Welcome extends Phaser.Scene {
   constructor() {
-    super("welcome");
+    super("Welcome");
   }
 
   preload() {
     this.load.image("openingImage", "/textures/backgrounds/openingImage.jpg");
-    this.load.image("buttonNormal", "/textures/buttons/startBtn.png");
+    this.load.image("onePlayerSelect", "/textures/buttons/1player.png");
+    this.load.image("twoPlayerSelect", "/textures/buttons/2player.png");
   }
 
   create() {
@@ -24,71 +24,15 @@ export default class Welcome extends Phaser.Scene {
       color: "#ffffff",
     });
 
-    // opening animations
-    this.anims.create({
-      key: "left walk on",
-      frames: this.anims.generateFrameNumbers("playerTwo", {
-        start: 143,
-        end: 151,
-      }),
-      frameRate: 7,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "right walk on",
-      frames: this.anims.generateFrameNumbers("playerOne", {
-        start: 117,
-        end: 125,
-      }),
-      frameRate: 7,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "left idle",
-      frames: this.anims.generateFrameNumbers("playerTwo", {
-        start: 364,
-        end: 365,
-      }),
-      frameRate: 3,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "right idle",
-      frames: this.anims.generateFrameNumbers("playerOne", {
-        start: 364,
-        end: 365,
-      }),
-      frameRate: 3,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "right front taunt",
-      frames: this.anims.generateFrameNumbers("playerOne", {
-        start: 27,
-        end: 33,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "left front taunt",
-      frames: this.anims.generateFrameNumbers("playerTwo", {
-        start: 27,
-        end: 33,
-      }),
-      frameRate: 4,
-      repeat: -1,
-    });
-
+    // create and place sprites
     this.leftAnimatedCharacter = this.add.sprite(-50, 400, "playerTwo");
     this.rightAnimatedCharacter = this.add.sprite(800, 400, "playerOne");
     this.leftAnimatedCharacter.setScale(2);
     this.rightAnimatedCharacter.setScale(2);
 
-    this.rightAnimatedCharacter.play("right walk on");
-    this.leftAnimatedCharacter.play("left walk on");
+    // opening animations
+    this.rightAnimatedCharacter.play("playerOne:right_walk_in_slow");
+    this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow");
 
     this.tweens.add({
       targets: this.leftAnimatedCharacter,
@@ -97,13 +41,14 @@ export default class Welcome extends Phaser.Scene {
       ease: "Linear",
       onUpdate: () => {
         if (
-          this.leftAnimatedCharacter.anims.currentAnim.key !== "left walk on"
+          this.leftAnimatedCharacter.anims.currentAnim.key !==
+          "playerTwo:left_walk_in_slow"
         ) {
-          this.leftAnimatedCharacter.play("left walk on", true);
+          this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow", true);
         }
       },
       onComplete: () => {
-        this.leftAnimatedCharacter.play("left idle");
+        this.leftAnimatedCharacter.play("playerTwo:front_player_idle");
         this.leftCharacterStopped = true;
         this.checkBothStopped();
       },
@@ -115,13 +60,17 @@ export default class Welcome extends Phaser.Scene {
       ease: "Linear",
       onUpdate: () => {
         if (
-          this.rightAnimatedCharacter.anims.currentAnim.key !== "right walk on"
+          this.rightAnimatedCharacter.anims.currentAnim.key !==
+          "playerOne:right_walk_in_slow"
         ) {
-          this.rightAnimatedCharacter.play("right walk on", true);
+          this.rightAnimatedCharacter.play(
+            "playerOne:right_walk_in_slow",
+            true
+          );
         }
       },
       onComplete: () => {
-        this.rightAnimatedCharacter.play("right idle");
+        this.rightAnimatedCharacter.play("playerOne:front_player_idle");
         this.rightCharacterStopped = true;
         this.checkBothStopped();
       },
@@ -133,19 +82,27 @@ export default class Welcome extends Phaser.Scene {
     }
   }
   showStartButton() {
-    const button = this.add
-      .image(420, 550, "buttonNormal")
+    const singlePlayer = this.add
+      .image(225, 550, "onePlayerSelect")
       .setInteractive()
-      .setOrigin(0.5)
+      .setScale(0.75);
+    const twoPlayer = this.add
+      .image(650, 550, "twoPlayerSelect")
+      .setInteractive()
       .setScale(0.75);
 
-    button.on("pointerdown", () => {
-      this.leftAnimatedCharacter.play("left front taunt");
-      this.rightAnimatedCharacter.play("right front taunt");
-    });
-    button.on("pointerup", () => {
+    singlePlayer.on("pointerup", () => {
+      this.leftAnimatedCharacter.play("playerTwo:front_taunt");
+      this.rightAnimatedCharacter.play("playerOne:front_taunt");
       this.time.delayedCall(1500, () => {
-        this.scene.start("Choose Character");
+        this.scene.start("Choose Character", { players: 1 });
+      });
+    });
+    twoPlayer.on("pointerup", () => {
+      this.leftAnimatedCharacter.play("playerTwo:front_taunt");
+      this.rightAnimatedCharacter.play("playerOne:front_taunt");
+      this.time.delayedCall(1500, () => {
+        this.scene.start("Choose Character", { players: 2 });
       });
     });
   }
