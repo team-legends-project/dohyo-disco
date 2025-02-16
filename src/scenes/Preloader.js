@@ -26,6 +26,10 @@ export default class Preloader extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet("referee", "/textures/sprites/referee.png", {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
     this.load.spritesheet(
       "inputButtons",
       "/textures/buttons/tilemap_white.png",
@@ -58,9 +62,9 @@ export default class Preloader extends Phaser.Scene {
       right_salutation: [{ start: 169, end: 174 }, 4, 1], // use with caution, looks a bit right wing
       left_taunt: [{ start: 39, end: 45 }, 4, 0], // repeats are a bit weird here
       right_taunt: [{ start: 13, end: 19 }, 4, 0], // repeats are a bit weird here
-      front_taunt: [{ start: 27, end: 32 }, 4, 1], // repeats are a bit weird here
+      front_taunt: [{ start: 27, end: 32 }, 4, 0], // repeats are a bit weird here
       right_wins: [{ start: 182, end: 187 }, 5, 0], // use setFlipX(true) for left win on play
-      fall_down: [{ start: 260, end: 265 }, 9, 0],
+      fall_down: [{ start: 260, end: 264 }, 9, 0],
     };
 
     // loops all playable characters and animations. Key sticks to "<characterKey>:<animsFrames[key]>" format.
@@ -94,7 +98,24 @@ export default class Preloader extends Phaser.Scene {
         });
       }
     }
+    // referee animations
+    const ref = {
+      walk_in: [{ start: 244, end: 251 }, 5, -1],
+      idle: [{ start: 261, end: 261 }, 5, -1],
+      left_win: [{ start: 288, end: 293 }, 7, 0],
+      right_win: [{ start: 306, end: 311 }, 7, 0],
+    };
 
+    for (const key in ref) {
+      const [cells, frameRate, repeat] = ref[key];
+      const { start, end } = cells;
+      this.anims.create({
+        key,
+        frames: this.anims.generateFrameNumbers("referee", { start, end }),
+        frameRate,
+        repeat,
+      });
+    }
     // keypress animation loops
     const btnFlashes = {
       w: [348, 84],
@@ -118,6 +139,6 @@ export default class Preloader extends Phaser.Scene {
       });
     }
     // starts the first scene with the Scene key from the super.
-    this.scene.start("Stage Two");
+    this.scene.start("Stage One");
   }
 }

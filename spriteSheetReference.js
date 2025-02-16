@@ -3,9 +3,9 @@ const ROWS = 54;
 const COLS = 13;
 const frameNums = [];
 let cellNum = 0;
-for (let i = 0; i < ROWS; i++) {
+for (let i = 0; i < 35; i++) {
   const temp = [];
-  for (let j = 0; j < 13; j++) {
+  for (let j = 0; j < 9; j++) {
     temp.push(cellNum);
     cellNum++;
   }
@@ -22,4 +22,4 @@ for (let i = 0; i < 24; i++) {
   }
   buttonFrames.push(temp);
 }
-console.log(buttonFrames);
+console.log(frameNums);
