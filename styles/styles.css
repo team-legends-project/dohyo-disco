@@ -1,9 +1,9 @@
 @font-face {
-  font-family: "Mario64";
-  src: url("/assets/Mario64.ttf") format("truetype");
+  font-family: "Crang";
+  src: url("/assets/Crang.ttf");
 }
 body {
-  font-family: "Arial", sans-serif !important;
+  font-family: "Crang", sans-serif !important;
 }
 #app {
   margin: auto;

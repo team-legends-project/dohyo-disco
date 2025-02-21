@@ -3,12 +3,17 @@ import Phaser from "phaser";
 export default class Welcome extends Phaser.Scene {
   constructor() {
     super("Welcome");
+    this.cursorIndex = 0;
   }
-
+  init() {
+    this.input.setDefaultCursor("none");
+  }
   preload() {
     this.load.image("openingImage", "/textures/backgrounds/openingImage.jpg");
     this.load.image("onePlayerSelect", "/textures/buttons/1player.png");
     this.load.image("twoPlayerSelect", "/textures/buttons/2player.png");
+    this.load.image("controls", "/textures/buttons/start.png");
+    this.load.image("cursor", "/assets/cursor.png");
   }
 
   create() {
@@ -18,10 +23,17 @@ export default class Welcome extends Phaser.Scene {
     backGround.setOrigin(0, 0);
 
     // creates title
-    this.add.text(1000 * 0.5, 100, "Dohyo Disco", {
-      fontFamily: "Arial",
+    this.add.text(450, 100, "Dohyo Disco", {
+      fontFamily: "Crang",
       fontSize: 40,
       color: "#ffffff",
+    });
+    // creates inputs
+    this.keyObjects = this.input.keyboard.addKeys({
+      up: Phaser.Input.Keyboard.KeyCodes.UP,
+      down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+      select: Phaser.Input.Keyboard.KeyCodes.ENTER,
+      close: Phaser.Input.Keyboard.KeyCodes.ESC,
     });
 
     // create and place sprites
@@ -29,14 +41,17 @@ export default class Welcome extends Phaser.Scene {
     this.rightAnimatedCharacter = this.add.sprite(800, 400, "playerOne");
     this.leftAnimatedCharacter.setScale(2);
     this.rightAnimatedCharacter.setScale(2);
-
+    this.cursor = this.add
+      .sprite(540, 245, "cursor")
+      .setScale(2)
+      .setVisible(false);
     // opening animations
     this.rightAnimatedCharacter.play("playerOne:right_walk_in_slow");
     this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow");
 
     this.tweens.add({
       targets: this.leftAnimatedCharacter,
-      x: 300,
+      x: 250,
       duration: 2000,
       ease: "Linear",
       onUpdate: () => {
@@ -55,7 +70,7 @@ export default class Welcome extends Phaser.Scene {
     });
     this.tweens.add({
       targets: this.rightAnimatedCharacter,
-      x: 550,
+      x: 600,
       duration: 2000,
       ease: "Linear",
       onUpdate: () => {
@@ -75,35 +90,97 @@ export default class Welcome extends Phaser.Scene {
         this.checkBothStopped();
       },
     });
+    // creates menu
+    const menuBackGround = this.add
+      .rectangle(400, 340, 500, 300, 0x000000)
+      .setDepth(2);
+    const fontConfig = {
+      fontFamily: "Crang",
+      fontSize: 18,
+      color: "#ffffff",
+    };
+    const instructions = this.add
+      .text(
+        190,
+        210,
+        "Player one controls:\nleft: a       right: d       mash: q,w,e,\n\n         hotseat\n\nPlayer two controls:\nleft: j       right: l       mash: u,i,o\n\npress esc to close",
+        fontConfig
+      )
+      .setDepth(3);
+    this.menuContainer = this.add.container(0, 0, [
+      menuBackGround,
+      instructions,
+    ]);
+    this.menuContainer.setDepth(2);
+    this.menuContainer.setVisible(false);
   }
+
+  // buttons and selectors toggle on after animation ends.
   checkBothStopped() {
     if (this.leftCharacterStopped && this.rightCharacterStopped) {
       this.showStartButton();
     }
   }
   showStartButton() {
-    const singlePlayer = this.add
-      .image(225, 550, "onePlayerSelect")
-      .setInteractive()
-      .setScale(0.75);
-    const twoPlayer = this.add
-      .image(650, 550, "twoPlayerSelect")
-      .setInteractive()
-      .setScale(0.75);
-
-    singlePlayer.on("pointerup", () => {
-      this.leftAnimatedCharacter.play("playerTwo:front_taunt");
-      this.rightAnimatedCharacter.play("playerOne:front_taunt");
-      this.time.delayedCall(1500, () => {
-        this.scene.start("Choose Character", { players: 1 });
-      });
+    // adds cursor
+    this.cursor.setVisible(true);
+    this.tweens.add({
+      targets: this.cursor,
+      scaleX: 1.2,
+      scaleY: 1.2,
+      duration: 600,
+      yoyo: true,
+      repeat: -1,
     });
-    twoPlayer.on("pointerup", () => {
-      this.leftAnimatedCharacter.play("playerTwo:front_taunt");
-      this.rightAnimatedCharacter.play("playerOne:front_taunt");
-      this.time.delayedCall(1500, () => {
-        this.scene.start("Choose Character", { players: 2 });
-      });
+    // adds on screen hint
+    this.add.text(150, 530, "use the up and down keys, press enter to select", {
+      fontFamily: "Crang",
+      fontSize: 18,
+      color: "#ffffff",
     });
+    // adds buttons
+    this.add.image(420, 240, "onePlayerSelect").setInteractive().setScale(0.75);
+    this.add.image(420, 340, "twoPlayerSelect").setInteractive().setScale(0.75);
+    this.add.image(420, 440, "controls").setInteractive().setScale(0.75);
+    this.add.text(340, 415, "controls", {
+      fontFamily: "Crang",
+      fontSize: 28,
+      color: "#ffffff",
+    });
+  }
+  handleInputs() {
+    if (
+      this.cursorIndex < 2 &&
+      Phaser.Input.Keyboard.JustDown(this.keyObjects.down)
+    ) {
+      this.cursor.y += 100;
+      this.cursorIndex++;
+    }
+    if (
+      this.cursorIndex > 0 &&
+      Phaser.Input.Keyboard.JustDown(this.keyObjects.up)
+    ) {
+      this.cursor.y -= 100;
+      this.cursorIndex--;
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.keyObjects.select)) {
+      if (this.cursorIndex < 2) {
+        this.leftAnimatedCharacter.play("playerTwo:front_taunt");
+        this.rightAnimatedCharacter.play("playerOne:front_taunt");
+        this.time.delayedCall(1500, () => {
+          this.scene.start("Choose Character", {
+            players: this.cursorIndex + 1,
+          });
+        });
+      } else {
+        this.menuContainer.setVisible(true);
+      }
+    }
+    if (Phaser.Input.Keyboard.JustDown(this.keyObjects.close)) {
+      this.menuContainer.setVisible(false);
+    }
+  }
+  update() {
+    this.handleInputs();
   }
 }

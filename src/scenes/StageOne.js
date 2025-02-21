@@ -7,13 +7,11 @@ export default class StageOne extends Phaser.Scene {
     this.matchEnd = false;
   }
   init(data) {
-    // in selection scene set {fighter:selectedFighter} in this.scene.start
-    // selected fighter is found here
-    this.players = 2;
-    // this.playerOne = data.player_one_sprite => to be defined by choose character
-    // this.playerTwo = data.player_two_sprite => to be defined by choose character
-    this.playerOneSprite = "oldMan";
-    this.playerTwoSprite = "minotaur";
+    // config sent from character selection of players
+    this.players = data.players;
+    this.playerOneSprite = data.leftPlayer;
+    this.playerTwoSprite = data.rightPlayer;
+    this.input.setDefaultCursor("none");
   }
   preload() {
     // background image of stage
@@ -140,6 +138,9 @@ export default class StageOne extends Phaser.Scene {
     }
   }
   updatePlayerTwo(controller) {
+    if (!this.inputEnabled) {
+      return;
+    }
     const speed = 200;
     const { p2Right, p2Left, p2Mash } = controller;
     if (p2Right.isDown) {
@@ -170,6 +171,7 @@ export default class StageOne extends Phaser.Scene {
 
     // Play winner animation and delay scene pause
     this.referee.play(`${side}_win`);
+    side === "left" ? (winner.x -= 40) : (winner.x += 40);
     winner.play(`${winner.texture.key}:front_taunt`);
     looser.play(`${looser.texture.key}:fall_down`);
 

@@ -26,6 +26,10 @@ export default class Preloader extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 64,
     });
+    this.load.spritesheet("woman", "/textures/sprites/woman.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
     this.load.spritesheet("referee", "/textures/sprites/referee.png", {
       frameWidth: 128,
       frameHeight: 128,
@@ -47,6 +51,7 @@ export default class Preloader extends Phaser.Scene {
       "oldMan",
       "orc",
       "minotaur",
+      "woman",
     ];
     const animsFrames = {
       front_player_idle: [[364, 365], 2, -1],
@@ -139,6 +144,6 @@ export default class Preloader extends Phaser.Scene {
       });
     }
     // starts the first scene with the Scene key from the super.
-    this.scene.start("Stage One");
+    this.scene.start("Welcome");
   }
 }
