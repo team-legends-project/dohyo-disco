@@ -50,11 +50,13 @@ export default class StageOne extends Phaser.Scene {
       .setScale(2.5)
       .setSize(20, 60)
       .setDepth(1);
+
     this.referee = this.add
       .sprite(420, 430, "referee")
       .setScale(2.5)
       .setDepth(0)
       .play("idle");
+
     // walk on
 
     this.tweens.add({
@@ -105,17 +107,19 @@ export default class StageOne extends Phaser.Scene {
     );
     this.physics.world.gravity.y = 0;
   }
+  // hope to change sprites here, may not be needed
   handlePlayerCollide() {}
 
   update() {
-    console.log(this.inputEnabled);
+    // if the match hasn't started or has ended, stop the update loop
     if (!this.matchStart || this.matchEnd) {
       return;
     }
-
+    // controls movement of players
     this.updatePlayerOne(this.keyObjects);
     this.updatePlayerTwo(this.keyObjects);
 
+    // win state detection
     if (this.playerOne.x <= 85) {
       this.declareWinner(this.playerTwo, this.playerOne, "right");
     }
@@ -124,6 +128,7 @@ export default class StageOne extends Phaser.Scene {
     }
   }
   updatePlayerOne(controller) {
+    // stops players moving before animation ends
     if (!this.inputEnabled) {
       return;
     }
@@ -141,6 +146,7 @@ export default class StageOne extends Phaser.Scene {
     }
   }
   updatePlayerTwo(controller) {
+    // stops players moving before animation ends
     if (!this.inputEnabled) {
       return;
     }
@@ -185,12 +191,14 @@ export default class StageOne extends Phaser.Scene {
         this.input.keyboard.clearCaptures();
 
         this.scene.pause();
+        // config to track how many rounds won
         const config = {
           players: this.players,
           leftPlayer: this.playerOneSprite,
           rightPlayer: this.playerTwoSprite,
           win: "player one",
         };
+        // current issue, second fight doesn't allow keyboard inputs
         this.scene.start("Stage One", config);
       });
     });

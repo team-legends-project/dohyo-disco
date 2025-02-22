@@ -123,14 +123,14 @@ export default class Preloader extends Phaser.Scene {
     }
     // keypress animation loops
     const btnFlashes = {
-      w: [348, 84],
-      q: [347, 83],
-      e: [349, 85],
-      s: [382, 118],
-      i: [354, 90],
-      k: [388, 124],
-      u: [353, 89],
-      o: [355, 91],
+      W: [348, 84],
+      Q: [347, 83],
+      E: [349, 85],
+      S: [382, 118],
+      I: [354, 90],
+      K: [388, 124],
+      U: [353, 89],
+      O: [355, 91],
     };
 
     for (const key in btnFlashes) {
@@ -144,6 +144,6 @@ export default class Preloader extends Phaser.Scene {
       });
     }
     // starts the first scene with the Scene key from the super.
-    this.scene.start("Welcome");
+    this.scene.start("Stage Two");
   }
 }

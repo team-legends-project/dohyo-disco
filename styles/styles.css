@@ -4,7 +4,13 @@
 }
 body {
   font-family: "Crang", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
 }
 #app {
-  margin: auto;
+  margin-top: 150px;
+  border: solid 1px white;
 }
