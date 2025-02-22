@@ -7,6 +7,7 @@ export default class StageOne extends Phaser.Scene {
     this.matchEnd = false;
   }
   init(data) {
+    console.log(data);
     // config sent from character selection of players
     this.players = data.players;
     this.playerOneSprite = data.leftPlayer;
@@ -24,6 +25,17 @@ export default class StageOne extends Phaser.Scene {
 
     // disable controls until animations end
     this.inputEnabled = false;
+    // adds inputs
+    this.keyObjects = this.input.keyboard.addKeys({
+      p1Select: Phaser.Input.Keyboard.KeyCodes.S,
+      p1Mash: Phaser.Input.Keyboard.KeyCodes.W,
+      p1Left: Phaser.Input.Keyboard.KeyCodes.A,
+      p1Right: Phaser.Input.Keyboard.KeyCodes.D,
+      p2Select: Phaser.Input.Keyboard.KeyCodes.I,
+      p2Mash: Phaser.Input.Keyboard.KeyCodes.K,
+      p2Left: Phaser.Input.Keyboard.KeyCodes.J,
+      p2Right: Phaser.Input.Keyboard.KeyCodes.L,
+    });
 
     // adds assets
     this.add.sprite(-80, 30, "stageOneBG").setOrigin(0, 0).setScale(0.5);
@@ -84,17 +96,7 @@ export default class StageOne extends Phaser.Scene {
         this.inputEnabled = true;
       }
     };
-    // adds inputs
-    this.keyObjects = this.input.keyboard.addKeys({
-      p1Select: "W",
-      p1Mash: "S",
-      p1Left: "A",
-      p1Right: "D",
-      p2Select: "I",
-      p2Mash: "K",
-      p2Left: "J",
-      p2Right: "L",
-    });
+
     // collision detection
     this.physics.add.collider(
       this.playerOne,
@@ -106,6 +108,7 @@ export default class StageOne extends Phaser.Scene {
   handlePlayerCollide() {}
 
   update() {
+    console.log(this.inputEnabled);
     if (!this.matchStart || this.matchEnd) {
       return;
     }
@@ -178,7 +181,17 @@ export default class StageOne extends Phaser.Scene {
     // Wait until animations complete before pausing the update loop
     winner.once("animationcomplete", () => {
       this.time.delayedCall(2000, () => {
+        this.input.keyboard.removeAllListeners();
+        this.input.keyboard.clearCaptures();
+
         this.scene.pause();
+        const config = {
+          players: this.players,
+          leftPlayer: this.playerOneSprite,
+          rightPlayer: this.playerTwoSprite,
+          win: "player one",
+        };
+        this.scene.start("Stage One", config);
       });
     });
   }

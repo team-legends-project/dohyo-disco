@@ -26,8 +26,8 @@ export default class ChooseCharacter extends Phaser.Scene {
     this.add.sprite(0, 0, "background").setScale(0.5).setOrigin(0, 0);
     this.one = this.add.sprite(100, 900, "playerOne").setScale(2);
     this.two = this.add.sprite(250, 900, "playerTwo").setScale(2);
-    this.three = this.add.sprite(550, 900, "oldMan").setScale(2);
-    this.four = this.add.sprite(400, 900, "minotaur").setScale(2);
+    this.three = this.add.sprite(400, 900, "oldMan").setScale(2);
+    this.four = this.add.sprite(550, 900, "minotaur").setScale(2);
     this.five = this.add.sprite(700, 900, "orc").setScale(2);
 
     // opening animation
@@ -117,6 +117,10 @@ export default class ChooseCharacter extends Phaser.Scene {
     ) {
       this.playerTwoChoice.x += 150;
       this.playerTwoCharacter++;
+      console.log(
+        this.playerTwoCharacter,
+        this.playersChars[this.playerTwoCharacter]
+      );
     }
     if (
       Phaser.Input.Keyboard.JustDown(this.keyObjects.p2Left) &&
@@ -124,12 +128,23 @@ export default class ChooseCharacter extends Phaser.Scene {
     ) {
       this.playerTwoChoice.x -= 150;
       this.playerTwoCharacter--;
+      console.log(
+        this.playerTwoCharacter,
+        this.playersChars[this.playerTwoCharacter]
+      );
     }
     if (Phaser.Input.Keyboard.JustDown(this.keyObjects.start)) {
+      console.log(
+        this.playerTwoCharacter,
+        this.playersChars[this.playerTwoCharacter]
+      );
       const leftPlayer = this.playersChars[this.playerOneCharacter];
       const rightPlayer = this.playersChars[this.playerTwoCharacter];
       const config = { players: this.players, leftPlayer, rightPlayer };
-      console.log(config);
+      console.log(
+        this.playerTwoCharacter,
+        this.playersChars[this.playerTwoCharacter]
+      );
       this.sprites[this.playerOneCharacter].play(
         `${this.playersChars[this.playerOneCharacter]}:front_taunt`
       );
