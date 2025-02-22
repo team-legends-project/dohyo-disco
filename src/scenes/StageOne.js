@@ -7,13 +7,12 @@ export default class StageOne extends Phaser.Scene {
     this.matchEnd = false;
   }
   init(data) {
-    // in selection scene set {fighter:selectedFighter} in this.scene.start
-    // selected fighter is found here
-    this.players = 2;
-    // this.playerOne = data.player_one_sprite => to be defined by choose character
-    // this.playerTwo = data.player_two_sprite => to be defined by choose character
-    this.playerOneSprite = "oldMan";
-    this.playerTwoSprite = "minotaur";
+    console.log(data);
+    // config sent from character selection of players
+    this.players = data.players;
+    this.playerOneSprite = data.leftPlayer;
+    this.playerTwoSprite = data.rightPlayer;
+    this.input.setDefaultCursor("none");
   }
   preload() {
     // background image of stage
@@ -26,6 +25,17 @@ export default class StageOne extends Phaser.Scene {
 
     // disable controls until animations end
     this.inputEnabled = false;
+    // adds inputs
+    this.keyObjects = this.input.keyboard.addKeys({
+      p1Select: Phaser.Input.Keyboard.KeyCodes.S,
+      p1Mash: Phaser.Input.Keyboard.KeyCodes.W,
+      p1Left: Phaser.Input.Keyboard.KeyCodes.A,
+      p1Right: Phaser.Input.Keyboard.KeyCodes.D,
+      p2Select: Phaser.Input.Keyboard.KeyCodes.I,
+      p2Mash: Phaser.Input.Keyboard.KeyCodes.K,
+      p2Left: Phaser.Input.Keyboard.KeyCodes.J,
+      p2Right: Phaser.Input.Keyboard.KeyCodes.L,
+    });
 
     // adds assets
     this.add.sprite(-80, 30, "stageOneBG").setOrigin(0, 0).setScale(0.5);
@@ -86,17 +96,7 @@ export default class StageOne extends Phaser.Scene {
         this.inputEnabled = true;
       }
     };
-    // adds inputs
-    this.keyObjects = this.input.keyboard.addKeys({
-      p1Select: "W",
-      p1Mash: "S",
-      p1Left: "A",
-      p1Right: "D",
-      p2Select: "I",
-      p2Mash: "K",
-      p2Left: "J",
-      p2Right: "L",
-    });
+
     // collision detection
     this.physics.add.collider(
       this.playerOne,
@@ -108,6 +108,7 @@ export default class StageOne extends Phaser.Scene {
   handlePlayerCollide() {}
 
   update() {
+    console.log(this.inputEnabled);
     if (!this.matchStart || this.matchEnd) {
       return;
     }
@@ -140,6 +141,9 @@ export default class StageOne extends Phaser.Scene {
     }
   }
   updatePlayerTwo(controller) {
+    if (!this.inputEnabled) {
+      return;
+    }
     const speed = 200;
     const { p2Right, p2Left, p2Mash } = controller;
     if (p2Right.isDown) {
@@ -170,13 +174,24 @@ export default class StageOne extends Phaser.Scene {
 
     // Play winner animation and delay scene pause
     this.referee.play(`${side}_win`);
+    side === "left" ? (winner.x -= 40) : (winner.x += 40);
     winner.play(`${winner.texture.key}:front_taunt`);
     looser.play(`${looser.texture.key}:fall_down`);
 
     // Wait until animations complete before pausing the update loop
     winner.once("animationcomplete", () => {
       this.time.delayedCall(2000, () => {
+        this.input.keyboard.removeAllListeners();
+        this.input.keyboard.clearCaptures();
+
         this.scene.pause();
+        const config = {
+          players: this.players,
+          leftPlayer: this.playerOneSprite,
+          rightPlayer: this.playerTwoSprite,
+          win: "player one",
+        };
+        this.scene.start("Stage One", config);
       });
     });
   }
