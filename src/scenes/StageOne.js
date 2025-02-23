@@ -46,6 +46,9 @@ export default class StageOne extends Phaser.Scene {
   }
 
   create() {
+    this.matchEnd = false;
+    this.matchStart = false;
+    this.haveCollided = false;
     //* for debugging collision detection, shows boundary boxes
     // this.physics.world.createDebugGraphic();
 
@@ -202,15 +205,17 @@ export default class StageOne extends Phaser.Scene {
     }
   }
   checkAndApplyAllVelocities() {
-    this.checkPlayerVelocity(this.player1);
-    this.checkPlayerVelocity(this.player2);
-    // this.checkCombinedVelocity();
+    if (!this.matchEnd) {
+      this.checkPlayerVelocity(this.player1);
+      this.checkPlayerVelocity(this.player2);
+      // this.checkCombinedVelocity();
 
-    if (this.haveCollided) {
-      console.log("HULLO");
-    } else {
-      this.player1.sprite.setVelocity(this.player1.velocity * 50, 0);
-      this.player2.sprite.setVelocity(this.player2.velocity * 50, 0);
+      if (this.haveCollided) {
+        console.log("HULLO");
+      } else {
+        this.player1.sprite.setVelocity(this.player1.velocity * 50, 0);
+        this.player2.sprite.setVelocity(this.player2.velocity * 50, 0);
+      }
     }
   }
 
@@ -277,9 +282,6 @@ export default class StageOne extends Phaser.Scene {
     // Wait until animations complete before pausing the update loop
     winner.once("animationcomplete", () => {
       this.time.delayedCall(2000, () => {
-        this.input.keyboard.removeAllListeners();
-        this.input.keyboard.clearCaptures();
-
         this.scene.pause();
         // config to track how many rounds won
         const config = {
@@ -289,7 +291,7 @@ export default class StageOne extends Phaser.Scene {
           win: "player one",
         };
         // current issue, second fight doesn't allow keyboard inputs
-        this.scene.start("Choose Character", config);
+        this.scene.start("Stage One", config);
       });
     });
   }
