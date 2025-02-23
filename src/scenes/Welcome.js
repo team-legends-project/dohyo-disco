@@ -37,8 +37,8 @@ export default class Welcome extends Phaser.Scene {
     });
 
     // create and place sprites
-    this.leftAnimatedCharacter = this.add.sprite(-50, 400, "playerTwo");
-    this.rightAnimatedCharacter = this.add.sprite(800, 400, "playerOne");
+    this.leftAnimatedCharacter = this.add.sprite(-50, 400, "Haruto");
+    this.rightAnimatedCharacter = this.add.sprite(800, 400, "Jaydan");
     this.leftAnimatedCharacter.setScale(2);
     this.rightAnimatedCharacter.setScale(2);
     this.cursor = this.add
@@ -46,8 +46,8 @@ export default class Welcome extends Phaser.Scene {
       .setScale(2)
       .setVisible(false);
     // opening animations
-    this.rightAnimatedCharacter.play("playerOne:right_walk_in_slow");
-    this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow");
+    this.rightAnimatedCharacter.play("Haruto:right_walk_in_slow");
+    this.leftAnimatedCharacter.play("Jaydan:left_walk_in_slow");
 
     this.tweens.add({
       targets: this.leftAnimatedCharacter,
@@ -57,13 +57,13 @@ export default class Welcome extends Phaser.Scene {
       onUpdate: () => {
         if (
           this.leftAnimatedCharacter.anims.currentAnim.key !==
-          "playerTwo:left_walk_in_slow"
+          "Jaydan:left_walk_in_slow"
         ) {
-          this.leftAnimatedCharacter.play("playerTwo:left_walk_in_slow", true);
+          this.leftAnimatedCharacter.play("Jaydan:left_walk_in_slow", true);
         }
       },
       onComplete: () => {
-        this.leftAnimatedCharacter.play("playerTwo:front_player_idle");
+        this.leftAnimatedCharacter.play("Jaydan:front_player_idle");
         this.leftCharacterStopped = true;
         this.checkBothStopped();
       },
@@ -76,16 +76,13 @@ export default class Welcome extends Phaser.Scene {
       onUpdate: () => {
         if (
           this.rightAnimatedCharacter.anims.currentAnim.key !==
-          "playerOne:right_walk_in_slow"
+          "Haruto:right_walk_in_slow"
         ) {
-          this.rightAnimatedCharacter.play(
-            "playerOne:right_walk_in_slow",
-            true
-          );
+          this.rightAnimatedCharacter.play("Haruto:right_walk_in_slow", true);
         }
       },
       onComplete: () => {
-        this.rightAnimatedCharacter.play("playerOne:front_player_idle");
+        this.rightAnimatedCharacter.play("Haruto:front_player_idle");
         this.rightCharacterStopped = true;
         this.checkBothStopped();
       },
@@ -165,8 +162,8 @@ export default class Welcome extends Phaser.Scene {
     }
     if (Phaser.Input.Keyboard.JustDown(this.keyObjects.select)) {
       if (this.cursorIndex < 2) {
-        this.leftAnimatedCharacter.play("playerTwo:front_taunt");
-        this.rightAnimatedCharacter.play("playerOne:front_taunt");
+        this.leftAnimatedCharacter.play("Jaydan:front_taunt");
+        this.rightAnimatedCharacter.play("Haruto:front_taunt");
         this.time.delayedCall(1500, () => {
           this.scene.start("Choose Character", {
             players: this.cursorIndex + 1,

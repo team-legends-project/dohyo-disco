@@ -10,13 +10,7 @@ export default class StageOne extends Phaser.Scene {
     this.combinedVelocity = 0;
     this.velocityCheckDelayInSeconds = 1;
     this.haveCollided = false;
-  }
-  init(data) {
-    console.log(data);
-    // config sent from character selection of players
-    this.players = data.players;
-    this.input.setDefaultCursor("none");
-
+    this.gameWon = false;
     this.player1 = {
       key: null,
       currentKeyIndex: 0,
@@ -24,9 +18,10 @@ export default class StageOne extends Phaser.Scene {
       velocity: 0,
       direction: 1,
       mashButtons: ["Q", "W", "E"],
-      spriteKey: data.leftPlayer,
+      spriteKey: null,
       sprite: null,
       isMoving: false,
+      wins: 0,
     };
     this.player2 = {
       key: null,
@@ -35,23 +30,32 @@ export default class StageOne extends Phaser.Scene {
       velocity: 0,
       direction: -1,
       mashButtons: ["U", "I", "O"],
-      spriteKey: data.rightPlayer,
+      spriteKey: null,
       sprite: null,
       isMoving: false,
+      wins: 0,
     };
   }
-  preload() {
-    // background image of stage
-    this.load.image("stageOneBG", "/textures/backgrounds/woodland.png");
-  }
-
-  create() {
+  init(data) {
+    // config sent from character selection of players
+    this.players = data.players;
+    this.input.setDefaultCursor("none");
+    this.player1.spriteKey = data.leftPlayer;
+    this.player2.spriteKey = data.rightPlayer;
+    // resets game state
     this.matchEnd = false;
     this.matchStart = false;
     this.haveCollided = false;
-    //* for debugging collision detection, shows boundary boxes
-    // this.physics.world.createDebugGraphic();
+  }
+  preload() {
+    // background image of stage
+    this.load.image("stageOneBG", "/textures/backgrounds/forest.jpg");
+    this.load.image("ring", "/textures/backgrounds/ring.png");
+  }
 
+  create() {
+    console.log(this.player1.wins, "player one win count");
+    console.log(this.player2.wins, "player two win count");
     // disable controls until animations end
     this.inputEnabled = false;
     // adds inputs
@@ -65,21 +69,53 @@ export default class StageOne extends Phaser.Scene {
     });
 
     // adds assets
-    this.add.sprite(-80, 30, "stageOneBG").setOrigin(0, 0).setScale(0.5);
+    this.add.sprite(-80, -120, "stageOneBG").setOrigin(0, 0).setScale(0.6);
+    this.add.sprite(400, 480, "ring").setScale(0.5);
+    this.add.rectangle(0, 0, 1600, 300, 0x00000);
+    const textConfig = {
+      fontFamily: "Crang",
+      fontSize: 36,
+      color: "#ffffff",
+    };
+
+    this.add.text(20, 15, `${this.player1.spriteKey}`, textConfig);
+    this.add
+      .text(780, 15, `${this.player2.spriteKey}`, textConfig)
+      .setOrigin(1, 0);
+    this.playerOneRoundOne = this.add
+      .sprite(60, 100, "inputButtons")
+      .setScale(2);
+    this.player1.wins === 1
+      ? this.playerOneRoundOne.setFrame(0)
+      : this.playerOneRoundOne.setFrame(12);
+    this.playerOneRoundTwo = this.add
+      .sprite(100, 100, "inputButtons")
+      .setFrame(12)
+      .setScale(2);
+    this.playerTwoRoundOne = this.add
+      .sprite(740, 100, "inputButtons")
+      .setScale(2);
+    this.player2.wins === 1
+      ? this.playerTwoRoundOne.setFrame(0)
+      : this.playerTwoRoundOne.setFrame(12);
+    this.playerTwoRoundTwo = this.add
+      .sprite(700, 100, "inputButtons")
+      .setFrame(12)
+      .setScale(2);
     this.player1.sprite = this.physics.add
-      .sprite(-50, 470, this.player1.spriteKey)
+      .sprite(-50, 410, this.player1.spriteKey)
       .setScale(2.5)
       .setSize(20, 60)
       .setDepth(1);
 
     this.player2.sprite = this.physics.add
-      .sprite(850, 470, this.player2.spriteKey)
+      .sprite(850, 410, this.player2.spriteKey)
       .setScale(2.5)
       .setSize(20, 60)
       .setDepth(1);
 
     this.referee = this.add
-      .sprite(420, 430, "referee")
+      .sprite(400, 360, "referee")
       .setScale(2.5)
       .setDepth(0)
       .play("idle");
@@ -93,10 +129,9 @@ export default class StageOne extends Phaser.Scene {
     });
 
     // walk on
-
     this.tweens.add({
       targets: this.player1.sprite,
-      x: 200,
+      x: 300,
       duration: 2000,
       ease: "Linear",
       onUpdate: () => {
@@ -114,7 +149,7 @@ export default class StageOne extends Phaser.Scene {
     });
     this.tweens.add({
       targets: this.player2.sprite,
-      x: 650,
+      x: 500,
       duration: 2000,
       ease: "Linear",
       onUpdate: () => {
@@ -139,24 +174,14 @@ export default class StageOne extends Phaser.Scene {
         this.inputEnabled = true;
 
         this.playerOneMash = this.add
-          .sprite(170, 250, "inputButtons")
-          .setScale(2)
+          .sprite(this.player1.sprite.x, 300, "inputButtons")
+          .setScale(3)
           .play(`${this.player1.mashButtons[this.player1.currentKeyIndex]}`);
 
         this.playerTwoMash = this.add
-          .sprite(680, 250, "inputButtons")
-          .setScale(2)
+          .sprite(this.player2.sprite.x, 300, "inputButtons")
+          .setScale(3)
           .play(`${this.player2.mashButtons[this.player2.currentKeyIndex]}`);
-
-        const textConfig = {
-          fontFamily: "Crang",
-          fontSize: 20,
-          color: "#ffffff",
-        };
-
-        this.playerOneMashText = this.add.text(50, 232, "press", textConfig);
-
-        this.playerTwoMashText = this.add.text(550, 232, "press", textConfig);
       }
     };
 
@@ -219,16 +244,15 @@ export default class StageOne extends Phaser.Scene {
     }
   }
 
-  // checkCombinedVelocity() {
-  //   this.combinedVelocity = this.player2.velocity + this.player1.velocity;
-  // }
-
   // hope to change sprites here, may not be needed
   handlePlayerCollide() {}
 
+  // move players and button sprites
   updatePlayers() {
     this.updatePlayer(this.player1);
     this.updatePlayer(this.player2);
+    this.playerOneMash.x = this.player1.sprite.x;
+    this.playerTwoMash.x = this.player2.sprite.x;
   }
 
   updatePlayer(player) {
@@ -251,47 +275,70 @@ export default class StageOne extends Phaser.Scene {
 
     // win state detection
     if (this.player1.sprite.x <= 85) {
-      this.declareWinner(this.player2.sprite, this.player1.sprite, "right");
+      this.player2.wins++;
+      this.declareWinner(this.player2, this.player1, "right");
+      if (this.player2.wins === 1) {
+        this.playerTwoRoundOne.setFrame(0);
+      } else {
+        this.playerTwoRoundTwo.setFrame(0);
+      }
     }
     if (this.player2.sprite.x >= 725) {
-      this.declareWinner(this.player1.sprite, this.player2.sprite, "left");
+      this.player1.wins++;
+      this.declareWinner(this.player1, this.player2, "left");
+      if (this.player1.wins === 1) {
+        this.playerOneRoundOne.setFrame(0);
+      } else {
+        this.playerOneRoundTwo.setFrame(0);
+      }
     }
   }
 
   declareWinner(winner, loser, side) {
     this.matchEnd = true;
-
+    this.playerOneMash.setVisible(false);
+    this.playerTwoMash.setVisible(false);
+    winner.wins === 2 ? (this.gameWon = true) : (this.gameWon = false);
+    const winText = this.gameWon
+      ? `${winner.spriteKey} wins the game!`
+      : `${winner.spriteKey} wins the round!`;
+    this.add
+      .text(this.cameras.main.width / 2, 200, `${winText}`, {
+        fontFamily: "Crang",
+        fontSize: 36,
+        color: "#ffffff",
+      })
+      .setOrigin(0.5);
     // Disable player input
     this.inputEnabled = false;
-    this.matchStart = false; // Stop update loop
+    // Stop update loop
+    this.matchStart = false;
 
     // Stop all movements
-    winner.setVelocity(0, 0);
-    loser.setVelocity(0, 0);
+    winner.sprite.setVelocity(0, 0);
+    loser.sprite.setVelocity(0, 0);
 
     // Stop any running animations before playing new ones
-    winner.anims.stop();
-    loser.anims.stop();
+    winner.sprite.anims.stop();
+    loser.sprite.anims.stop();
 
     // Play winner animation and delay scene pause
     this.referee.play(`${side}_win`);
-    side === "left" ? (winner.x -= 40) : (winner.x += 40);
-    winner.play(`${winner.texture.key}:front_taunt`);
-    loser.play(`${loser.texture.key}:fall_down`);
+    side === "left" ? (winner.sprite.x -= 40) : (winner.sprite.x += 40);
+    winner.sprite.play(`${winner.spriteKey}:front_taunt`);
+    loser.sprite.play(`${loser.spriteKey}:fall_down`);
 
     // Wait until animations complete before pausing the update loop
-    winner.once("animationcomplete", () => {
+    winner.sprite.once("animationcomplete", () => {
       this.time.delayedCall(2000, () => {
         this.scene.pause();
-        // config to track how many rounds won
-        const config = {
-          players: this.players,
-          leftPlayer: this.player1.spriteKey,
-          rightPlayer: this.player2.spriteKey,
-          win: "player one",
-        };
-        // current issue, second fight doesn't allow keyboard inputs
-        this.scene.start("Stage One", config);
+        if (this.gameWon) {
+          this.player1.wins = 0;
+          this.player2.wins = 0;
+          this.scene.start("Choose Character");
+        } else {
+          this.scene.start("Stage One");
+        }
       });
     });
   }

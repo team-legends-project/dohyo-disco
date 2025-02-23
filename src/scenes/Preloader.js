@@ -6,23 +6,23 @@ export default class Preloader extends Phaser.Scene {
   }
   preload() {
     // load in spritesheets for access throughout game
-    this.load.spritesheet("playerOne", "/textures/sprites/playerOne.png", {
+    this.load.spritesheet("Haruto", "/textures/sprites/playerOne.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-    this.load.spritesheet("playerTwo", "/textures/sprites/playerTwo.png", {
+    this.load.spritesheet("Jaydan", "/textures/sprites/playerTwo.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-    this.load.spritesheet("oldMan", "/textures/sprites/old_man.png", {
+    this.load.spritesheet("Ryota", "/textures/sprites/old_man.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-    this.load.spritesheet("orc", "/textures/sprites/orc.png", {
+    this.load.spritesheet("Thorgar", "/textures/sprites/orc.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
-    this.load.spritesheet("minotaur", "/textures/sprites/minotaur.png", {
+    this.load.spritesheet("Aeson", "/textures/sprites/minotaur.png", {
       frameWidth: 64,
       frameHeight: 64,
     });
@@ -46,12 +46,11 @@ export default class Preloader extends Phaser.Scene {
   create() {
     // animations library, if new players are added, add key to playable characters and loop will build animations
     const playableCharacters = [
-      "playerOne",
-      "playerTwo",
-      "oldMan",
-      "orc",
-      "minotaur",
-      "woman",
+      "Haruto",
+      "Jaydan",
+      "Ryota",
+      "Aeson",
+      "Thorgar",
     ];
     const animsFrames = {
       front_player_idle: [[364, 365], 2, -1],

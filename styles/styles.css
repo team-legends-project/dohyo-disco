@@ -11,6 +11,6 @@ body {
   background-color: black;
 }
 #app {
-  margin-top: 150px;
   border: solid 1px white;
+  margin-top: 50px;
 }
