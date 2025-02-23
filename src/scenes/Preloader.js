@@ -144,6 +144,6 @@ export default class Preloader extends Phaser.Scene {
       });
     }
     // starts the first scene with the Scene key from the super.
-    this.scene.start("Stage Two");
+    this.scene.start("Welcome");
   }
 }
