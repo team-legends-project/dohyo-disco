@@ -5,7 +5,7 @@ export default class ChooseCharacter extends Phaser.Scene {
     super("Choose Character");
     this.playerOneCharacter = 0;
     this.playerTwoCharacter = 4;
-    this.playersChars = ["playerOne", "playerTwo", "oldMan", "minotaur", "orc"];
+    this.playersChars = ["Haruto", "Jaydan", "Ryota", "Aeson", "Thorgar"];
   }
 
   init(data) {
@@ -21,17 +21,16 @@ export default class ChooseCharacter extends Phaser.Scene {
   }
   create() {
     this.inputEnabled = false;
-
     // set players and background
     this.add.sprite(0, 0, "background").setScale(0.5).setOrigin(0, 0);
-    this.one = this.add.sprite(100, 900, "playerOne").setScale(2);
-    this.two = this.add.sprite(250, 900, "playerTwo").setScale(2);
-    this.three = this.add.sprite(400, 900, "oldMan").setScale(2);
-    this.four = this.add.sprite(550, 900, "minotaur").setScale(2);
-    this.five = this.add.sprite(700, 900, "orc").setScale(2);
+    this.one = this.add.sprite(100, 900, "Haruto").setScale(2);
+    this.two = this.add.sprite(250, 900, "Jaydan").setScale(2);
+    this.three = this.add.sprite(400, 900, "Ryota").setScale(2);
+    this.four = this.add.sprite(550, 900, "Aeson").setScale(2);
+    this.five = this.add.sprite(700, 900, "Thorgar").setScale(2);
 
     // opening animation
-    this.one.play("playerOne:rear_walk_in");
+
     this.sprites = [this.one, this.two, this.three, this.four, this.five];
     let animationsComplete = 0;
     for (let i = 0; i < this.playersChars.length; i++) {
@@ -88,10 +87,8 @@ export default class ChooseCharacter extends Phaser.Scene {
     this.keyObjects = this.input.keyboard.addKeys({
       p1Left: Phaser.Input.Keyboard.KeyCodes.A,
       p1Right: Phaser.Input.Keyboard.KeyCodes.D,
-      p1Select: Phaser.Input.Keyboard.KeyCodes.S,
       p2Left: Phaser.Input.Keyboard.KeyCodes.J,
       p2Right: Phaser.Input.Keyboard.KeyCodes.L,
-      p2Select: Phaser.Input.Keyboard.KeyCodes.K,
       start: Phaser.Input.Keyboard.KeyCodes.ENTER,
     });
   }
@@ -117,10 +114,6 @@ export default class ChooseCharacter extends Phaser.Scene {
     ) {
       this.playerTwoChoice.x += 150;
       this.playerTwoCharacter++;
-      console.log(
-        this.playerTwoCharacter,
-        this.playersChars[this.playerTwoCharacter]
-      );
     }
     if (
       Phaser.Input.Keyboard.JustDown(this.keyObjects.p2Left) &&
@@ -128,29 +121,20 @@ export default class ChooseCharacter extends Phaser.Scene {
     ) {
       this.playerTwoChoice.x -= 150;
       this.playerTwoCharacter--;
-      console.log(
-        this.playerTwoCharacter,
-        this.playersChars[this.playerTwoCharacter]
-      );
     }
     if (Phaser.Input.Keyboard.JustDown(this.keyObjects.start)) {
-      console.log(
-        this.playerTwoCharacter,
-        this.playersChars[this.playerTwoCharacter]
-      );
       const leftPlayer = this.playersChars[this.playerOneCharacter];
       const rightPlayer = this.playersChars[this.playerTwoCharacter];
       const config = { players: this.players, leftPlayer, rightPlayer };
-      console.log(
-        this.playerTwoCharacter,
-        this.playersChars[this.playerTwoCharacter]
-      );
+
       this.sprites[this.playerOneCharacter].play(
         `${this.playersChars[this.playerOneCharacter]}:front_taunt`
       );
       this.sprites[this.playerTwoCharacter].play(
         `${this.playersChars[this.playerTwoCharacter]}:front_taunt`
       );
+      this.playerOneCharacter = 0;
+      this.playerTwoCharacter = 4;
       this.time.delayedCall(3000, () => {
         this.scene.start("Stage One", config);
       });
