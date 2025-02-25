@@ -5,7 +5,7 @@ import Welcome from "./Welcome";
 import ChooseCharacter from "./ChooseCharacter";
 // @ts-ignore
 import StageOne from "./StageOne";
-import StageTwo from "./StageTwo";
+import EndGame from "./End";
 
 const config = {
   type: Phaser.AUTO,
@@ -18,7 +18,7 @@ const config = {
       gravity: { y: 200 },
     },
   },
-  scene: [Preloader, Welcome, ChooseCharacter, StageOne, StageTwo],
+  scene: [Preloader, Welcome, ChooseCharacter, StageOne, EndGame],
 };
 
 export default new Phaser.Game(config);
