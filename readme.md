@@ -1,8 +1,8 @@
 # Dohyo Disco
 
 ![image](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)\
+![Demo](https://www.youtube.com/watch?v=UKAgvEu2R-8)\
 version : 1.0
-![demo](https://www.youtube.com/watch?v=UKAgvEu2R-8)
 ## Contents
 
 [What is it?](#what-is-it?)\
