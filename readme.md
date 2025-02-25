@@ -1,7 +1,7 @@
 # Dohyo Disco
 
 ![image](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)\
-![Live Demo](https://dohyo-disco.netlify.app/)\
+
 version : 1.0
 ## Contents
 
@@ -19,6 +19,7 @@ A Phaser 3 single and two player Sumo inspired game. Either single player, or tw
 ## Where is it?
 
 Dohyo Disco is hosted using Netlify and can be found [here](https://dohyo-disco.netlify.app/)
+Or you can view a video demo [here](https://www.youtube.com/watch?v=UKAgvEu2R-8)
 
 ## How its made
 
