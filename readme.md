@@ -54,3 +54,7 @@ This project has been made possible with collaboration between [Verity Gregory](
 - New stages
 - More fighters
 - Single player journey
+
+### Coming soon, maybe
+
+- Mobile play 📱
