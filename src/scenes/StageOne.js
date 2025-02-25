@@ -209,7 +209,7 @@ export default class StageOne extends Phaser.Scene {
     });
   }
   aiPress() {
-    if (this.matchStart) {
+    if (this.matchStart && this.players === 1) {
       this.player2.keyPressesPerDelay += 2;
     }
   }
