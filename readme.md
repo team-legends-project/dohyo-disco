@@ -1,112 +1,56 @@
-# Phaser 3 + Vite.js Template
-> Make Phaser 3 games with modern frontend tooling.
+# Dohyo Disco
 
-![License](https://img.shields.io/badge/license-MIT-green)
+![image](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)\
+version : 1.0
 
-## Prerequisites
+## Contents
 
-You'll need [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed.
+[What is it?](#what-is-it?)\
+[Where is it?](#where-is-it)\
+[How its made](#how-its-made)\
+[Resources and Credits](#resources-and-credits)\
+[How to run locally](#how-to-run-locally)
+[Outstanding features](#outstanding-features)
 
-It is highly recommended to use [Node Version Manager](https://github.com/nvm-sh/nvm) (nvm) to install Node.js and npm.
+## What is it?
 
-For Windows users there is [Node Version Manager for Windows](https://github.com/coreybutler/nvm-windows).
+A Phaser 3 single and two player Sumo inspired game. Either single player, or two player hot seating, choose your fighter. Your character will have a keyboard button flash above their head. Press the right key quicker than your opponent to force them out of the ring. Best of three rounds to win the match.
 
-Install Node.js and `npm` with `nvm`:
+## Where is it?
 
-```bash
-nvm install node
+Dohyo Disco is hosted using Netlify and can be found [here](https://dohyo-disco.netlify.app/)
 
-nvm use node
-```
+## How its made
 
-Replace 'node' with 'latest' for `nvm-windows`.
+Using JavaScript along with the Phaser library the game is created using Classes for each scene.
 
-## Getting Started
+To run the game a web server needs to be running to support the game's update loop. This repo leverages a Vite config to run locally and is hosted on netlify to run in browser.
 
-You can clone this repository or use [degit](https://github.com/Rich-Harris/degit) to scaffold the project like this:
+## Resources and Credits
 
-```bash
-npx degit https://github.com/ourcade/phaser3-vite-template my-folder-name
-cd my-folder-name
+Sprites were made using Universal LPC Spritesheet Generator, their open source project can be found [here](https://github.com/liberatedpixelcup/Universal-LPC-Spritesheet-Character-Generator).
 
-npm install
-```
+Background images sources from [Wallpaper flare](https://www.wallpaperflare.com/)
 
-Start development server:
+This project has been made possible with collaboration between [Verity Gregory](https://github.com/dappernerddesigns), [Katherine Hurst](https://github.com/itskatherine), and [Niamh Smith](https://github.com/NRMSMITH). Check out their profiles and projects
 
-```
-npm run start
-```
+## How to run locally
 
-To create a production build:
+### Prerequisits
 
-```
-npm run build
-```
+- node 20 and above
+- code editor
+- browser
 
-Production files will be placed in the `dist` folder. Then upload those files to a web server. 🎉
+1. Clone the repo
+2. `cd` into the repo via terminal of choice
+3. run `npm i` to install all the required dependencies
+4. run `npm run start` to begin the vite server
+5. visit [localhost:8000](localhost:8000) in your browser to see the game.
 
-## Project Structure
+## Outstanding features
 
-```
-    .
-    ├── dist
-    ├── node_modules
-    ├── public
-    ├── src
-    │   ├── HelloWorldScene.js
-    │   ├── main.js
-	├── index.html
-    ├── package.json
-```
-
-JavaScript files are intended for the `src` folder. `main.js` is the entry point referenced by `index.html`.
-
-Other than that there is no opinion on how you should structure your project.
-
-There is an example `HelloWorldScene.js` file that can be placed inside a `scenes` folder to organize by type or elsewhere to organize by function. For example, you can keep all files specific to the HelloWorld scene in a `hello-world` folder.
-
-It is all up to you!
-
-## Static Assets
-
-Any static assets like images or audio files should be placed in the `public` folder. It'll then be served from the root. For example: http://localhost:8000/images/my-image.png
-
-Example `public` structure:
-
-```
-    public
-    ├── images
-    │   ├── my-image.png
-    ├── music
-    │   ├── ...
-    ├── sfx
-    │   ├── ...
-```
-
-They can then be loaded by Phaser with `this.image.load('my-image', 'images/my-image.png')`.
-
-# ESLint
-
-This template uses a basic `eslint` set up for code linting to help you find and fix common problems in your JavaScript code.
-
-It does not aim to be opinionated.
-
-[See here for rules to turn on or off](https://eslint.org/docs/rules/).
-
-## Dev Server Port
-
-You can change the dev server's port number by modifying the `vite.config.js` file. Look for the `server` section:
-
-```js
-{
-	// ...
-	server: { host: '0.0.0.0', port: 8000 },
-}
-```
-
-Change 8000 to whatever you want.
-
-## License
-
-[MIT License](https://github.com/ourcade/phaser3-vite-template/blob/master/LICENSE)
+- Multiplayer over browser
+- New stages
+- More fighters
+- Single player journey
