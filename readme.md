@@ -9,7 +9,7 @@ version : 1.0
 [Where is it?](#where-is-it)\
 [How its made](#how-its-made)\
 [Resources and Credits](#resources-and-credits)\
-[How to run locally](#how-to-run-locally)
+[How to run locally](#how-to-run-locally)\
 [Outstanding features](#outstanding-features)
 
 ## What is it?
