@@ -136,14 +136,25 @@ export default class Welcome extends Phaser.Scene {
       color: "#ffffff",
     });
     // adds buttons
-    this.add.image(420, 240, "onePlayerSelect").setInteractive().setScale(0.75);
-    this.add.image(420, 340, "twoPlayerSelect").setInteractive().setScale(0.75);
-    this.add.image(420, 440, "controls").setInteractive().setScale(0.75);
-    this.add.text(340, 415, "controls", {
-      fontFamily: "Crang",
-      fontSize: 28,
-      color: "#ffffff",
-    });
+    this.onePlayerButton = this.add
+      .image(420, 240, "onePlayerSelect")
+      .setInteractive()
+      .setScale(0.75);
+    this.twoPlayerButton = this.add
+      .image(420, 340, "twoPlayerSelect")
+      .setInteractive()
+      .setScale(0.75);
+    this.controlsBtn = this.add
+      .image(420, 440, "controls")
+      .setInteractive()
+      .setScale(0.75);
+    this.controlBtnText = this.add
+      .text(420, 435, "controls", {
+        fontFamily: "Crang",
+        fontSize: 28,
+        color: "#ffffff",
+      })
+      .setOrigin(0.5);
   }
   handleInputs() {
     if (
@@ -164,13 +175,46 @@ export default class Welcome extends Phaser.Scene {
       if (this.cursorIndex < 2) {
         this.leftAnimatedCharacter.play("Jaydan:front_taunt");
         this.rightAnimatedCharacter.play("Haruto:front_taunt");
+        if (this.cursorIndex === 0) {
+          this.tweens.add({
+            targets: this.onePlayerButton,
+            scaleX: 0.6,
+            scaleY: 0.6,
+            duration: 300,
+            yoyo: true,
+          });
+        } else {
+          this.tweens.add({
+            targets: this.twoPlayerButton,
+            scaleX: 0.6,
+            scaleY: 0.6,
+            duration: 300,
+            yoyo: true,
+          });
+        }
         this.time.delayedCall(1500, () => {
           this.scene.start("Choose Character", {
             players: this.cursorIndex + 1,
           });
         });
       } else {
-        this.menuContainer.setVisible(true);
+        this.tweens.add({
+          targets: this.controlsBtn,
+          scaleX: 0.6,
+          scaleY: 0.6,
+          duration: 300,
+          yoyo: true,
+        });
+        this.tweens.add({
+          targets: this.controlBtnText,
+          scaleX: 0.6,
+          scaleY: 0.6,
+          duration: 300,
+          yoyo: true,
+        });
+        this.time.delayedCall(400, () => {
+          this.menuContainer.setVisible(true);
+        });
       }
     }
     if (Phaser.Input.Keyboard.JustDown(this.keyObjects.close)) {

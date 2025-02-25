@@ -352,7 +352,7 @@ export default class StageOne extends Phaser.Scene {
         if (this.gameWon) {
           this.player1.wins = 0;
           this.player2.wins = 0;
-          this.scene.start("Choose Character");
+          this.scene.start("End Game");
         } else {
           this.scene.start("Stage One");
         }
