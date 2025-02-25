@@ -1,7 +1,7 @@
 # Dohyo Disco
 
 ![image](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)\
-![Demo](https://www.youtube.com/watch?v=UKAgvEu2R-8)\
+![Live Demo](https://dohyo-disco.netlify.app/)\
 version : 1.0
 ## Contents
 
