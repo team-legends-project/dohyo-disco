@@ -164,25 +164,49 @@ export default class StageOne extends Phaser.Scene {
           .on("animationcomplete", checkAnimationsComplete);
       },
     });
+    this.playerOneMash = this.add
+      .sprite(this.player1.sprite.x, 300, "inputButtons")
+      .setScale(3)
+      .play(`${this.player1.mashButtons[this.player1.currentKeyIndex]}`)
+      .setVisible(false);
+
+    if (this.players === 2) {
+      this.playerTwoMash = this.add
+        .sprite(this.player2.sprite.x, 300, "inputButtons")
+        .setScale(3)
+        .play(`${this.player2.mashButtons[this.player2.currentKeyIndex]}`)
+        .setVisible(false);
+    }
     let animationsComplete = 0;
     const checkAnimationsComplete = () => {
       animationsComplete++;
 
       if (animationsComplete === 2) {
-        this.matchStart = true;
-        this.inputEnabled = true;
-
-        this.playerOneMash = this.add
-          .sprite(this.player1.sprite.x, 300, "inputButtons")
-          .setScale(3)
-          .play(`${this.player1.mashButtons[this.player1.currentKeyIndex]}`);
-
-        if (this.players === 2) {
-          this.playerTwoMash = this.add
-            .sprite(this.player2.sprite.x, 300, "inputButtons")
-            .setScale(3)
-            .play(`${this.player2.mashButtons[this.player2.currentKeyIndex]}`);
-        }
+        // Countdown logic
+        this.countdownText = this.add
+          .text(this.cameras.main.width / 2, 250, "3", {
+            fontFamily: "Crang",
+            fontSize: 54,
+            color: "#ffffff",
+          })
+          .setOrigin(0.5);
+        let countDown = 3;
+        this.time.addEvent({
+          delay: 1000,
+          repeat: 3,
+          callback: () => {
+            countDown--;
+            if (countDown > 0) {
+              this.countdownText.setText(`${countDown}`);
+            } else {
+              this.countdownText.setText("Go!");
+              this.time.delayedCall(500, () => {
+                this.countdownText.destroy();
+                this.startFight();
+              });
+            }
+          },
+        });
       }
     };
 
@@ -207,6 +231,14 @@ export default class StageOne extends Phaser.Scene {
       callbackScope: this,
       loop: true,
     });
+  }
+  startFight() {
+    this.matchStart = true;
+    this.inputEnabled = true;
+    this.playerOneMash.setVisible(true);
+    if (this.players === 2) {
+      this.playerTwoMash.setVisible(true);
+    }
   }
   aiPress() {
     if (this.matchStart && this.players === 1) {
