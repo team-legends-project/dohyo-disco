@@ -42,6 +42,7 @@ export default class StageOne extends Phaser.Scene {
     this.input.setDefaultCursor("none");
     this.player1.spriteKey = data.leftPlayer;
     this.player2.spriteKey = data.rightPlayer;
+
     // resets game state
     this.matchEnd = false;
     this.matchStart = false;
@@ -54,8 +55,6 @@ export default class StageOne extends Phaser.Scene {
   }
 
   create() {
-    console.log(this.player1.wins, "player one win count");
-    console.log(this.player2.wins, "player two win count");
     // disable controls until animations end
     this.inputEnabled = false;
     // adds inputs
@@ -120,7 +119,7 @@ export default class StageOne extends Phaser.Scene {
       .setDepth(0)
       .play("idle");
 
-    // creates a timer for five seconds to randomise an index
+    // creates a timer for five seconds to randomise an index of keypress
     this.time.addEvent({
       delay: 5000,
       callback: this.changeMashButton,
@@ -178,10 +177,12 @@ export default class StageOne extends Phaser.Scene {
           .setScale(3)
           .play(`${this.player1.mashButtons[this.player1.currentKeyIndex]}`);
 
-        this.playerTwoMash = this.add
-          .sprite(this.player2.sprite.x, 300, "inputButtons")
-          .setScale(3)
-          .play(`${this.player2.mashButtons[this.player2.currentKeyIndex]}`);
+        if (this.players === 2) {
+          this.playerTwoMash = this.add
+            .sprite(this.player2.sprite.x, 300, "inputButtons")
+            .setScale(3)
+            .play(`${this.player2.mashButtons[this.player2.currentKeyIndex]}`);
+        }
       }
     };
 
@@ -192,7 +193,7 @@ export default class StageOne extends Phaser.Scene {
       this.handlePlayerCollide
     );
     this.physics.world.gravity.y = 0;
-
+    // check the player input
     timer = this.time.addEvent({
       delay: this.velocityCheckDelayInSeconds * 1000, //convert to milliseconds
       callback: this.checkAndApplyAllVelocities,
@@ -200,8 +201,18 @@ export default class StageOne extends Phaser.Scene {
       loop: true,
       paused: false,
     });
+    this.time.addEvent({
+      delay: Phaser.Math.Between(200, 400), // AI presses every 200-400ms
+      callback: this.aiPress,
+      callbackScope: this,
+      loop: true,
+    });
   }
-
+  aiPress() {
+    if (this.matchStart) {
+      this.player2.keyPressesPerDelay += 2;
+    }
+  }
   changeMashButton() {
     if (this.matchStart) {
       this.player1.currentKeyIndex = Phaser.Math.Between(0, 2);
@@ -209,9 +220,11 @@ export default class StageOne extends Phaser.Scene {
       this.playerOneMash.play(
         `${this.player1.mashButtons[this.player1.currentKeyIndex]}`
       );
-      this.playerTwoMash.play(
-        `${this.player2.mashButtons[this.player2.currentKeyIndex]}`
-      );
+      if (this.players === 2) {
+        this.playerTwoMash.play(
+          `${this.player2.mashButtons[this.player2.currentKeyIndex]}`
+        );
+      }
     }
   }
 
@@ -250,9 +263,11 @@ export default class StageOne extends Phaser.Scene {
   // move players and button sprites
   updatePlayers() {
     this.updatePlayer(this.player1);
-    this.updatePlayer(this.player2);
+    if (this.players === 2) {
+      this.updatePlayer(this.player2);
+      this.playerTwoMash.x = this.player2.sprite.x;
+    }
     this.playerOneMash.x = this.player1.sprite.x;
-    this.playerTwoMash.x = this.player2.sprite.x;
   }
 
   updatePlayer(player) {
@@ -297,7 +312,9 @@ export default class StageOne extends Phaser.Scene {
   declareWinner(winner, loser, side) {
     this.matchEnd = true;
     this.playerOneMash.setVisible(false);
-    this.playerTwoMash.setVisible(false);
+    if (this.players === 2) {
+      this.playerTwoMash.setVisible(false);
+    }
     winner.wins === 2 ? (this.gameWon = true) : (this.gameWon = false);
     const winText = this.gameWon
       ? `${winner.spriteKey} wins the game!`
