@@ -21,6 +21,8 @@ export default class EndGame extends Phaser.Scene {
         fontSize: 36,
         color: "#ffffff",
         align: "center",
+        stroke: "#000000",
+        strokeThickness: 4,
       })
       .setOrigin(0.5);
 
@@ -60,6 +62,8 @@ export default class EndGame extends Phaser.Scene {
           fontSize: 18,
           color: "#ffffff",
           align: "center",
+          stroke: "#000000",
+          strokeThickness: 3,
         }
       )
       .setOrigin(0.5);
