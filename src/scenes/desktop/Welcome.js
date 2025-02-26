@@ -27,6 +27,8 @@ export default class Welcome extends Phaser.Scene {
       fontFamily: "Crang",
       fontSize: 40,
       color: "#ffffff",
+      stroke: "#000000",
+      strokeThickness: 4,
     });
     // creates inputs
     this.keyObjects = this.input.keyboard.addKeys({
