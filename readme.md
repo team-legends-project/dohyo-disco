@@ -2,10 +2,11 @@
 
 ![image](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)\
 
-version : 1.0
+version : 1.1
 ## Contents
 
 [What is it?](#what-is-it?)\
+[New features](#new-features)\
 [Where is it?](#where-is-it)\
 [How its made](#how-its-made)\
 [Resources and Credits](#resources-and-credits)\
@@ -15,6 +16,9 @@ version : 1.0
 ## What is it?
 
 A Phaser 3 single and two player Sumo inspired game. Either single player, or two player hot seating, choose your fighter. Your character will have a keyboard button flash above their head. Press the right key quicker than your opponent to force them out of the ring. Best of three rounds to win the match.
+
+## New features
+Mobile play is here! 📱 Single players can now play through the same link on their devices in landscape mode. Smash buttons have been added to either side of the screen, tap as fast as you can to push the computer player out the ring.
 
 ## Where is it?
 
@@ -58,4 +62,4 @@ This project has been made possible with collaboration between [Verity Gregory](
 
 ### Coming soon, maybe
 
-- Mobile play 📱
+- Mobile play hot seating
