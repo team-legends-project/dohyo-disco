@@ -10,7 +10,8 @@ body {
   align-items: center;
   background-color: black;
 }
-#app {
-  border: solid 1px white;
-  margin-top: 50px;
+@media only screen and (min-width: 1000px) {
+  #app {
+    margin-top: 50px;
+  }
 }

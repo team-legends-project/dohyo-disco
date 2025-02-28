@@ -69,6 +69,11 @@ export default class Preloader extends Phaser.Scene {
       front_taunt: [{ start: 27, end: 32 }, 4, 0], // repeats are a bit weird here
       right_wins: [{ start: 182, end: 187 }, 5, 0], // use setFlipX(true) for left win on play
       fall_down: [{ start: 260, end: 264 }, 9, 0],
+      front_salutation: [{ start: 182, end: 187 }, 4, 1],
+      rear_salutation: [{ start: 156, end: 161 }, 4, 1],
+      front_run: [{ start: 494, end: 501 }, 7, -1],
+      rear_run: [{ start: 494, end: 501 }, 7, -1],
+      rear_idle: [[338, 339], 3, -1],
     };
 
     // loops all playable characters and animations. Key sticks to "<characterKey>:<animsFrames[key]>" format.
@@ -126,10 +131,6 @@ export default class Preloader extends Phaser.Scene {
       B: [5, 42],
       X: [6, 43],
       Y: [7, 44],
-      I: [354, 90],
-      K: [388, 124],
-      U: [353, 89],
-      O: [355, 91],
     };
 
     for (const key in btnFlashes) {
