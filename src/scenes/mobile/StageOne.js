@@ -300,7 +300,7 @@ export default class StageOne extends Phaser.Scene {
   }
   aiPress() {
     if (this.matchStart && this.players === 1) {
-      this.player2.keyPressesPerDelay += 3;
+      this.player2.keyPressesPerDelay += 2.5;
     }
   }
   changeMashButton() {

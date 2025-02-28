@@ -10,6 +10,7 @@ import Preloader from "./mobile/Preloader";
 import Welcome from "./mobile/Welcome";
 import ChooseCharacter from "./mobile/ChooseCharacter";
 import StageOne from "./mobile/StageOne";
+import StageTwoPlayer from "./mobile/StageTwoPlayer";
 import EndGame from "./mobile/End";
 const isMobile = window.innerWidth <= 900;
 
@@ -83,7 +84,14 @@ const mobileConfig = {
       gravity: { y: 200 },
     },
   },
-  scene: [Preloader, Welcome, ChooseCharacter, StageOne, EndGame], // Replace with mobile-specific scenes later
+  scene: [
+    Preloader,
+    Welcome,
+    ChooseCharacter,
+    StageOne,
+    StageTwoPlayer,
+    EndGame,
+  ], // Replace with mobile-specific scenes later
 };
 
 // Start desktop immediately, or check for mobile rotation

@@ -85,10 +85,15 @@ export default class Welcome extends Phaser.Scene {
     }
   }
   showStartButton() {
-    const width = this.cameras.main.width;
+    const width = this.scale.width;
     // adds buttons
     this.onePlayerButton = this.add
       .image(width / 2, 140, "onePlayerSelect")
+      .setInteractive()
+      .setScale(0.6)
+      .setOrigin(0.5);
+    this.twoPlayerButton = this.add
+      .image(width / 2, 240, "twoPlayerSelect")
       .setInteractive()
       .setScale(0.6)
       .setOrigin(0.5);
@@ -111,22 +116,23 @@ export default class Welcome extends Phaser.Scene {
       }
     });
 
-    //* mobile doesn't support two player yet
-    // this.twoPlayerButton.on('pointerdown',()=>{
-    //   this.tweens.add({
-    //     targets: this.twoPlayerButton,
-    //     scaleX: 0.6,
-    //     scaleY: 0.6,
-    //     duration: 300,
-    //     yoyo: true,
-    //   });
-    //   this.playTaunt()
-    //   this.time.delayedCall(1500, () => {
-    //     this.scene.start("Choose Character", {
-    //       players: this.cursorIndex + 1,
-    //     });
-    //   });
-    // })
+    this.twoPlayerButton.on("pointerdown", (pointer) => {
+      if (pointer.isDown) {
+        this.tweens.add({
+          targets: this.twoPlayerButton,
+          scaleX: 0.45,
+          scaleY: 0.45,
+          duration: 300,
+          yoyo: true,
+        });
+        this.playTaunt();
+        this.time.delayedCall(1500, () => {
+          this.scene.start("Choose Character", {
+            players: 2,
+          });
+        });
+      }
+    });
   }
   playTaunt() {
     this.leftAnimatedCharacter.play("Jaydan:front_taunt");
