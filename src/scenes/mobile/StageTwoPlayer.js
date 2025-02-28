@@ -51,16 +51,16 @@ export default class StageTwoPlayer extends Phaser.Scene {
     this.matchStart = false;
     this.haveCollided = false;
   }
-  preload() {}
+  preload() {
+    this.load.image("stage", "/textures/backgrounds/mobile_background.png");
+  }
   create() {
     this.inputEnabled = false;
+    this.add.image(370, 150, "stage").setOrigin(0.5);
     // this isn't wrong, accounts for device in landscape
     const height = this.scale.height;
     const width = this.scale.width;
-    // adds play area
-    this.circle = this.add
-      .circle(width / 2, height / 2, height / 2, 0xff0000)
-      .setOrigin(0.5);
+
     // player 1
     this.player1.sprite = this.physics.add
       .sprite(110, height / 2, this.player1.spriteKey)
@@ -111,6 +111,8 @@ export default class StageTwoPlayer extends Phaser.Scene {
       fontFamily: "Crang",
       fontSize: 18,
       color: "#ffffff",
+      stroke: "#000000",
+      strokeThickness: 3,
     };
     this.playerOneName = this.add.text(
       110,
