@@ -23,7 +23,7 @@ Mobile play is here! 📱 Both single players and hotseating games can now play 
 ## Where is it?
 
 Dohyo Disco is hosted using Netlify and can be found [here](https://dohyo-disco.netlify.app/)
-Or you can view a video demo [here](https://www.youtube.com/watch?v=UKAgvEu2R-8)
+Or you can view a video demo [here](https://youtu.be/C_mRZeOAu48)
 
 ## How its made
 
